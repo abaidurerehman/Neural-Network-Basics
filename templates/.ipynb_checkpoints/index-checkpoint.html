@@ -1,0 +1,108 @@
+%%writefile templates/index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwritten Digit Recognition</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            color: #fff;
+            text-align: center;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"] {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out;
+        }
+
+        input[type="submit"]:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .uploaded-image {
+            margin-top: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Upload an Image of a Digit (PNG with Black Background)</h2>
+        <form action="/" method="post" enctype="multipart/form-data" onsubmit="return validateFile()">
+            <input type="file" id="fileInput" name="file" accept="image/png" required>
+            <input type="submit" value="Predict">
+        </form>
+        
+        <script>
+            function validateFile() {
+                const fileInput = document.getElementById('fileInput');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    alert("Please upload a PNG image with a black background.");
+                    return false;
+                }
+                
+                if (file.type !== 'image/png') {
+                    alert("Only PNG images are allowed!");
+                    return false;
+                }
+                
+                return true;
+            }
+        </script>
+        
+        {% if filename %}
+        <h3>Uploaded Image:</h3>
+        <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Image" width="150" class="uploaded-image">
+        <h3>Predicted Digit: {{ digit }}</h3>
+        {% endif %}
+    </div>
+</body>
+</html>

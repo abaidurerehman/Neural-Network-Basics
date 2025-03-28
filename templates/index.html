@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Network Digit Recognizer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: black;
+            overflow: hidden;
+            color: white;
+        }
+
+        /* Starry Animated Background */
+        .stars {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('https://i.imgur.com/Vy7yEhp.png');
+            animation: animateStars 50s linear infinite;
+        }
+
+        @keyframes animateStars {
+            from { background-position: 0 0; }
+            to { background-position: -10000px 5000px; }
+        }
+
+        .container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-size: 24px;
+            color: #ffcc00;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-file-upload {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #ffcc00, #ff6600);
+            color: black;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .custom-file-upload:hover {
+            background: linear-gradient(135deg, #ff6600, #ffcc00);
+        }
+
+        .submit-btn {
+            display: block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #00ccff, #0066ff);
+            color: white;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #0066ff, #00ccff);
+        }
+
+        img {
+            margin-top: 15px;
+            width: 150px;
+            border-radius: 8px;
+            border: 2px solid white;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="container">
+        <h1>Neural Network Digit Recognizer</h1>
+        <h2>Upload an Image of a Digit (PNG with Black Background)</h2>
+        <form action="/" method="post" enctype="multipart/form-data" onsubmit="return validateFile()">
+            <label class="custom-file-upload">
+                <input type="file" id="fileInput" name="file" accept="image/png" required>
+                Choose Image
+            </label>
+            <input type="submit" class="submit-btn" value="Predict">
+        </form>
+
+        <script>
+            function validateFile() {
+                const fileInput = document.getElementById('fileInput');
+                const file = fileInput.files[0];
+                
+                if (!file) {
+                    alert("Please upload a PNG image with a black background.");
+                    return false;
+                }
+
+                if (file.type !== 'image/png') {
+                    alert("Only PNG images are allowed!");
+                    return false;
+                }
+
+                return true;
+            }
+        </script>
+
+        {% if filename %}
+        <h3>Uploaded Image:</h3>
+        <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Image">
+        <h3>Predicted Digit: {{ digit }}</h3>
+        {% endif %}
+    </div>
+</body>
+</html>
+
+
